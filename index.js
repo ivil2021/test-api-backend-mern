@@ -137,7 +137,9 @@ app.post('/posts/add', async (req, res) => {
     try {
         // создаём пост в базе с данными из запроса
         const doc = new PostModel({
-            postText: req.body.postText,
+            title: req.body.title,
+            text: req.body.text,
+            user: '63a8ab738e5fca38ee9602a2',
         });
 
         const post = await doc.save();
@@ -191,9 +193,9 @@ app.get('/auth/me/:id', async (req, res) => {
     }
 });
 
-app.get('/posts/getAll', registerValidation, async (req, res) => {
+app.get('/posts', registerValidation, async (req, res) => {
     try {
-        const posts = await PostModel.find().populate('User').exec();
+        const posts = await PostModel.find().populate('user').exec();
 
         res.json({posts});
     } catch (err) {
