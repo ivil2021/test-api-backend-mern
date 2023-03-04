@@ -13,14 +13,16 @@ import checkAuth from './utils/checkAuth.js';
 
 import cors from 'cors';
 
+import * as PostController from './controllers/PostController.js'
+
 // добавил, так как при установке npm i было предупреждение об этом
 mongoose.set('strictQuery', false)
 
 mongoose
     .connect(
         // user2 - user of database, user2 - password of user2 user for database
-        // social-network - name of the database
-        'mongodb+srv://user2:user2@cluster0.mrg0h.mongodb.net/social-network?retryWrites=true&w=majority'
+        // qa-test-api - name of the database
+        'mongodb+srv://user2:user2@cluster0.mrg0h.mongodb.net/qa-test-api?retryWrites=true&w=majority'
     )
     .then(() => console.log('db ok'))
     .catch((err) => console.log('db error', err));
@@ -133,31 +135,6 @@ app.post('/auth/register', registerValidation, async (req, res) => {
     }
 });
 
-app.post('/posts/add', async (req, res) => {
-    try {
-        // создаём пост в базе с данными из запроса
-        const doc = new PostModel({
-            title: req.body.title,
-            text: req.body.text,
-            user: '63a8ab738e5fca38ee9602a2',
-        });
-
-        const post = await doc.save();
-
-        // прописываем здесь __v, чтобы не передавать его в ответе
-        const { __v, ...postData } = post._doc;
-
-        res.json({
-            // передаем все данные поста, кроме __v
-            ...postData,
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            message: 'не удалось добавить пост',
-        });
-    }
-});
 
 // app.get('/auth/me', async (req, res) => {
 
@@ -193,20 +170,6 @@ app.get('/auth/me/:id', async (req, res) => {
     }
 });
 
-app.get('/posts', registerValidation, async (req, res) => {
-    try {
-        const posts = await PostModel.find().populate('user').exec();
-
-        res.json({posts});
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            message: 'не удалось получить посты',
-        });
-    }
-});
-
-
 // GET ONE USER BY ID
 app.get('/users/:id', async (req, res) => {
     try {
@@ -225,7 +188,6 @@ app.get('/users/:id', async (req, res) => {
         console.log(error);
     }
 });
-
 
 // GET ALL USERS
 app.get('/users', async (req, res) => {
@@ -247,6 +209,22 @@ app.get('/users', async (req, res) => {
         console.log(error);
     }
 });
+
+
+// добавление поста
+app.post('/posts/add', PostController.addOne);
+
+// получение всех постов
+app.get('/posts', registerValidation, PostController.getAll);
+
+// получение одного поста по его id
+app.get('/posts/:id', registerValidation, PostController.getOne);
+
+// обновление одного поста по его id
+app.put('/posts/:id', registerValidation, PostController.updateOne);
+
+// удаление одного поста по его id
+app.delete('/posts/:id', registerValidation, PostController.removeOne);
 
 
 

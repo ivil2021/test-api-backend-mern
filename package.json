@@ -1,12 +1,11 @@
 {
-  "name": "archakov_fullstack_blog_mern",
+  "name": "test-api-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "start:dev": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
