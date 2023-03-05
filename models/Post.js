@@ -11,9 +11,17 @@ const PostSchema = new mongoose.Schema({
         required: true, // свойство обязательно
         unique: true, // свойство должно быть уникальным
     },
-    viewsCount: {
+    countTen: {
         type: Number,
-        default: 0,
+        default: 0, // значение 0 по умолчанию
+    },
+    resCountTen: {
+        type: Number,
+        default: 0, // значение 0 по умолчанию
+    },
+    createdAt: {
+        type: String,
+        default: '', // значение 0 по умолчанию
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -21,7 +29,7 @@ const PostSchema = new mongoose.Schema({
         required: true,
     },
 },{
-    timestamps: true
+    timestamps: false
 });
 
 export default mongoose.model('Post', PostSchema);
