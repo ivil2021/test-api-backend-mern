@@ -21,8 +21,8 @@ mongoose.set('strictQuery', false)
 mongoose
     .connect(
         // user2 - user of database, user2 - password of user2 user for database
-        // qa-test-api - name of the database
-        'mongodb+srv://user2:user2@cluster0.mrg0h.mongodb.net/qa-test-api?retryWrites=true&w=majority'
+        // test-api-backend - name of the database
+        'mongodb+srv://user2:user2@cluster0.mrg0h.mongodb.net/test-api-backend?retryWrites=true&w=majority'
     )
     .then(() => console.log('db ok'))
     .catch((err) => console.log('db error', err));
